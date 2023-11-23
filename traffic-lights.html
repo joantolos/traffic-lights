@@ -58,21 +58,49 @@
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      background-color: #777;
-      border: 2px solid black; /* Add a black border */
+      background-color: rgba(119, 119, 119, 0.1);
+      border: 2px solid rgba(0, 0, 0, 1);
       position: relative;
     }
 
-    .red {
-      background-color: red;
+    .red.on {
+      background-color: rgba(255, 0, 0, 1);
     }
 
-    .yellow {
-      background-color: yellow;
+    .yellow.on {
+      background-color: rgba(255, 255, 0, 1);
     }
 
-    .green {
-      background-color: green;
+    .green.on {
+      background-color: rgba(0, 255, 0, 1);
+    }
+
+    .red.off {
+      background-color: rgba(255, 0, 0, 0.1);
+    }
+
+    .yellow.off {
+      background-color: rgba(255, 255, 0, 0.1);
+    }
+
+    .green.off {
+      background-color: rgba(0, 255, 0, 0.1);
+    }
+
+    .red.off,
+    .yellow.off,
+    .green.on,
+    .pedestrian-green-light.on {
+      opacity: 1;
+    }
+    .pedestrian-green-light.off {
+      opacity: 0.2;
+    }
+    .pedestrian-red-light.on {
+      opacity: 1;
+    }
+    .pedestrian-red-light.off {
+      opacity: 0.2;
     }
 
     /* Styling for the pedestrian icons */
@@ -155,16 +183,16 @@
   <header><h3>Traffic Light Simulator</h3></header>
   <div class="traffic-light-container">
     <div class="vehicle-light">
-      <div class="light red"></div>
-      <div class="light yellow"></div>
-      <div class="light green"></div>
+      <div class="light red off"></div>
+      <div class="light yellow off"></div>
+      <div class="light green on"></div>
     </div>
     <div class="pedestrian-light">
-      <div class="pedestrian-red-light"><i class="fa-solid fa-person"></i></div>
-      <div class="pedestrian-green-light"><i class="fa-solid fa-person-walking"></i></div>
+      <div class="pedestrian-red-light on"><i class="fa-solid fa-person"></i></div>
+      <div class="pedestrian-green-light off"><i class="fa-solid fa-person-walking"></i></div>
     </div>
   </div>
-  <button></button>
+  <button id="controlButton"></button>
   
   <footer>
     <div class="variables">
@@ -173,5 +201,19 @@
       <a href="https://www.joantolos.com/blog/traffic-light-simulator" target="_blank">&copy; Joan Tolos - Traffic Light Simulator proof of concept</a>
     </div>
   </footer>
+
+  <script>
+    // JavaScript logic to handle button click and toggle opacities
+    const controlButton = document.getElementById('controlButton');
+    const vehicleLights = document.querySelectorAll('.vehicle-light .light');
+    const pedestrianLights = document.querySelectorAll('.pedestrian-light .pedestrian-light i');
+
+    let isVehicleGreenOn = true; // Initial state
+
+    controlButton.addEventListener('click', () => {
+      
+
+    });
+  </script>
 </body>
 </html>

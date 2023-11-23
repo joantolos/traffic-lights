@@ -14,7 +14,6 @@
       justify-content: center;
       height: 100vh;
       margin: 0;
-      overflow-y: hidden; /* Disable vertical scrolling */
     }
 
     header {
@@ -25,7 +24,7 @@
     .traffic-light-container {
       display: flex; /* Make the container a flex container */
       align-items: flex-end; /* Align items to the bottom of the container */
-      margin-bottom: 250px;
+      margin-bottom: 80px; /* Adjust the margin as needed */
     }
 
     .vehicle-light {
@@ -124,6 +123,32 @@
       font-size: 10px; /* Adjust the font size for the link text */
     }
 
+    /* Styling for the button */
+    button {
+      width: 30px;
+      height: 30px;
+      background-color: #f0f0f0;
+      border: 2px solid black;
+      border-radius: 5px;
+      cursor: pointer;
+      position: relative;
+      outline: none;
+    }
+
+    /* Green circle inside the button */
+    button::before {
+      content: '';
+      width: 20px; /* Adjust the size of the circle */
+      height: 20px; /* Adjust the size of the circle */
+      background-color: green;
+      border-radius: 50%;
+      position: absolute;
+      border: 2px solid black;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
   </style>
 </head>
 <body>
@@ -139,11 +164,12 @@
       <div class="pedestrian-green-light"><i class="fa-solid fa-person-walking"></i></div>
     </div>
   </div>
+  <button></button>
+  
   <footer>
     <div class="variables">
-      <div>Variable one: 14</div>
-      <div>Variable two: 40</div>
-      <div>Variable three: 3</div>
+      <div>Seconds for vehicles to go through: 30</div>
+      <div>Seconds for pedestrians to go through: 30</div>    
       <a href="https://www.joantolos.com/blog/traffic-light-simulator" target="_blank">&copy; Joan Tolos - Traffic Light Simulator proof of concept</a>
     </div>
   </footer>

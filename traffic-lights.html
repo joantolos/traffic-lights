@@ -113,10 +113,10 @@
       width: 100%; /* Center horizontally */
     }
     .pedestrian-green-light i {
-      color: green; /* Set the color for the icons */
+      color: rgba(0, 255, 0, 1); /* Set the color for the icons */
     }
     .pedestrian-red-light i {
-      color: red; /* Set the color for the icons */
+      color: rgba(255, 0, 0, 1); /* Set the color for the icons */
     }
 
     /* Styling for header and footer */
@@ -196,8 +196,8 @@
   
   <footer>
     <div class="variables">
-      <div>Seconds for vehicles to go through: 30</div>
-      <div>Seconds for pedestrians to go through: 30</div>    
+      <div>Seconds for vehicles to go through: 20</div>
+      <div>Seconds for pedestrians to go through: 10</div>    
       <a href="https://www.joantolos.com/blog/traffic-light-simulator" target="_blank">&copy; Joan Tolos - Traffic Light Simulator proof of concept</a>
     </div>
   </footer>
@@ -205,13 +205,31 @@
   <script>
     // JavaScript logic to handle button click and toggle opacities
     const controlButton = document.getElementById('controlButton');
-    const vehicleLights = document.querySelectorAll('.vehicle-light .light');
-    const pedestrianLights = document.querySelectorAll('.pedestrian-light .pedestrian-light i');
+    
+    const pedestrianGreen = document.querySelectorAll('.pedestrian-green-light');
+    const pedestrianRed = document.querySelectorAll('.pedestrian-red-light');
 
+    const vehicleRed = document.querySelectorAll('.red');
+    const vehicleYellow = document.querySelectorAll('.yellow');
+    const vehicleGreen = document.querySelectorAll('.green');
+  
     let isVehicleGreenOn = true; // Initial state
-
+  
     controlButton.addEventListener('click', () => {
-      
+
+      if (isVehicleGreenOn) {
+        vehicleGreen.classList.toggle('off')
+        vehicleRed.classList.toggle('on')
+
+        pedestrianGreen.classList.toggle('on')
+        pedestrianRed.classList.toggle('off')
+      } else {
+        vehicleGreen.classList.toggle('on')
+        vehicleRed.classList.toggle('off')
+
+        pedestrianGreen.classList.toggle('off')
+        pedestrianRed.classList.toggle('on')
+      }
 
     });
   </script>

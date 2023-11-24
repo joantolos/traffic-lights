@@ -266,13 +266,10 @@
     controlButton.addEventListener('click', async () => {
         changeRequested = true;
         sequenceFinished = false;
-        console.log('###### Change requested: ' + changeRequested);
-        console.log('###### Sequence finished: ' + sequenceFinished);
 
         await stopTrafficSequence();
 
         sequenceFinished = true;
-        console.log('###### Sequence finished: ' + sequenceFinished);
     });
   </script>
 

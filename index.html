@@ -87,9 +87,6 @@
       background-color: rgba(0, 255, 0, 0.1);
     }
 
-    .red.off,
-    .yellow.off,
-    .green.on,
     .pedestrian-green-light.on {
       opacity: 1;
     }
@@ -183,9 +180,9 @@
   <header><h3>Traffic Light Simulator</h3></header>
   <div class="traffic-light-container">
     <div class="vehicle-light">
-      <div class="light red off"></div>
-      <div class="light yellow off"></div>
-      <div class="light green on"></div>
+      <div class="light red"></div>
+      <div class="light yellow"></div>
+      <div class="light green"></div>
     </div>
     <div class="pedestrian-light">
       <div class="pedestrian-red-light on"><i class="fa-solid fa-person"></i></div>
@@ -197,36 +194,25 @@
   <footer>
     <div class="variables">
       <div>Vehicles grace period: 20 seconds</div>
-      <div>Seconds for pedestrians to go through: 10</div>    
+      <div>Seconds for pedestrians to go through: 10</div>
       <a href="https://www.joantolos.com/blog/traffic-light-simulator" target="_blank">&copy; Joan Tolos - Traffic Light Simulator proof of concept</a>
     </div>
   </footer>
 
   <script>
-    // JavaScript logic to handle button click and toggle opacities
     const controlButton = document.getElementById('controlButton');
     const vehicleLights = document.querySelectorAll('.vehicle-light .light');
-    const pedestrianLights = document.querySelectorAll('.pedestrian-light i');
-  
-    let isVehicleGreenOn = true; // Initial state
+
+    const vehicleRed = vehicleLights[0];
+    const vehicleYellow = vehicleLights[1];
+    const vehicleGreen = vehicleLights[2];
+
+    vehicleRed.classList.toggle('off');
+    vehicleYellow.classList.toggle('off');
+    vehicleGreen.classList.toggle('on');
   
     controlButton.addEventListener('click', () => {
-      // Toggle the state
-      isVehicleGreenOn = !isVehicleGreenOn;
-  
-      // Toggle opacity classes for vehicle lights
-      vehicleLights.forEach((light, index) => {
-        console.log('LIGHT: ' + light.classList);
-        light.classList.toggle('on', index === 2 && isVehicleGreenOn);
-        light.classList.toggle('off', index !== 2 || !isVehicleGreenOn);
-      });
-  
-      // Toggle opacity classes for pedestrian lights
-      pedestrianLights.forEach((pedestrianLight, index) => {
-        console.log('LIGHT: ' + pedestrianLight.classList);
-        pedestrianLight.classList.toggle('on', index === 0 && !isVehicleGreenOn);
-        pedestrianLight.classList.toggle('off', index !== 0 || isVehicleGreenOn);
-      });
+      
     });
   </script>
 </body>

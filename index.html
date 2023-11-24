@@ -205,66 +205,46 @@
         light.classList.toggle('off');
     }
 
-    function vehiclesRedPedestriansGreen(vehicleRed, vehicleYellow, vehicleGreen, stopLight, walkLight) {
-      switchLight(vehicleYellow);
-      switchLight(vehicleGreen);
+    function delay(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
 
-      // Stop for 3 seconds
-      setTimeout(() => {
+    async function stopTrafficSequence() {
+        switchLight(vehicleYellow);
+        switchLight(vehicleGreen);
+
+        await delay(3000); // Stop for 3 seconds
+
         switchLight(vehicleYellow);
         switchLight(vehicleRed);
 
-        // Stop for 2 seconds
-        setTimeout(() => {
-          // Pedestrian lights to green
-          switchLight(stopLight);
-          switchLight(walkLight);
+        await delay(1500); // Stop for 1.5 seconds
 
-          // Stop for 10 seconds
-          setTimeout(() => {
-            pedestriansRedVehiclesGreen(vehicleRed, vehicleYellow, vehicleGreen, stopLight, walkLight);
-          }, 5000); // 5 seconds
-
-        }, 2000); // 2 seconds
-
-      }, 3000); // 3 seconds
-    }
-
-    function pedestriansRedVehiclesGreen(vehicleRed, vehicleYellow, vehicleGreen, stopLight, walkLight) {
-      setTimeout(() => {
+        switchLight(stopLight);
         switchLight(walkLight);
-        setTimeout(() => {
-          switchLight(walkLight);
-          setTimeout(() => {
+
+        await delay(5000); // Stop for 5 seconds
+
+        for (let i = 0; i < 8; i++) {
             switchLight(walkLight);
-            setTimeout(() => {
-              switchLight(walkLight);
-              setTimeout(() => {
-                switchLight(walkLight);
-                setTimeout(() => {
-                  switchLight(walkLight);
-                  setTimeout(() => {
-                    switchLight(walkLight);
-                    switchLight(stopLight);
+            await delay(500); // half second
+        }
 
-                    setTimeout(() => {
-                      switchLight(vehicleGreen);
-                      switchLight(vehicleRed);
-                    }, 2000); // 2 seconds
+        switchLight(walkLight);
+        switchLight(stopLight);
+        
+        await delay(1500); // Stop for 1.5 seconds
 
-                  }, 500); // half second
-                }, 500); // half second
-              }, 500); // half second
-            }, 500); // half second
-          }, 500); // half second
-        }, 500); // half second
-      }, 500); // half second
+        switchLight(vehicleGreen);
+        switchLight(vehicleRed);
+
+        await delay(2000); // 2 seconds
     }
 
     const controlButton = document.getElementById('controlButton');
     let changeRequested = false;
     let sequenceFinished = false;
-    
+
     // Vehicle lights
     const vehicleLights = document.querySelectorAll('.vehicle-light .light');
     const vehicleRed = vehicleLights[0];
@@ -283,18 +263,18 @@
     stopLight.classList.add('on');
     walkLight.classList.add('off');
 
-    controlButton.addEventListener('click', () => {
+    controlButton.addEventListener('click', async () => {
         changeRequested = true;
         sequenceFinished = false;
         console.log('###### Change requested: ' + changeRequested);
         console.log('###### Sequence finished: ' + sequenceFinished);
-        
-        // Vehicles light to red
-        vehiclesRedPedestriansGreen(vehicleRed, vehicleYellow, vehicleGreen, stopLight, walkLight)
+
+        await stopTrafficSequence();
 
         sequenceFinished = true;
         console.log('###### Sequence finished: ' + sequenceFinished);
     });
-</script>
+  </script>
+
 </body>
 </html>

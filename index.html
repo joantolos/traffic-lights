@@ -205,7 +205,65 @@
         light.classList.toggle('off');
     }
 
+    function vehiclesRedPedestriansGreen(vehicleRed, vehicleYellow, vehicleGreen, stopLight, walkLight) {
+      switchLight(vehicleYellow);
+      switchLight(vehicleGreen);
+
+      // Stop for 3 seconds
+      setTimeout(() => {
+        switchLight(vehicleYellow);
+        switchLight(vehicleRed);
+
+        // Stop for 2 seconds
+        setTimeout(() => {
+          // Pedestrian lights to green
+          switchLight(stopLight);
+          switchLight(walkLight);
+
+          // Stop for 10 seconds
+          setTimeout(() => {
+            pedestriansRedVehiclesGreen(vehicleRed, vehicleYellow, vehicleGreen, stopLight, walkLight);
+          }, 5000); // 5 seconds
+
+        }, 2000); // 2 seconds
+
+      }, 3000); // 3 seconds
+    }
+
+    function pedestriansRedVehiclesGreen(vehicleRed, vehicleYellow, vehicleGreen, stopLight, walkLight) {
+      setTimeout(() => {
+        switchLight(walkLight);
+        setTimeout(() => {
+          switchLight(walkLight);
+          setTimeout(() => {
+            switchLight(walkLight);
+            setTimeout(() => {
+              switchLight(walkLight);
+              setTimeout(() => {
+                switchLight(walkLight);
+                setTimeout(() => {
+                  switchLight(walkLight);
+                  setTimeout(() => {
+                    switchLight(walkLight);
+                    switchLight(stopLight);
+
+                    setTimeout(() => {
+                      switchLight(vehicleGreen);
+                      switchLight(vehicleRed);
+                    }, 2000); // 2 seconds
+
+                  }, 500); // half second
+                }, 500); // half second
+              }, 500); // half second
+            }, 500); // half second
+          }, 500); // half second
+        }, 500); // half second
+      }, 500); // half second
+    }
+
     const controlButton = document.getElementById('controlButton');
+    let changeRequested = false;
+    let sequenceFinished = false;
     
     // Vehicle lights
     const vehicleLights = document.querySelectorAll('.vehicle-light .light');
@@ -226,13 +284,16 @@
     walkLight.classList.add('off');
 
     controlButton.addEventListener('click', () => {
-        // Toggle the styles for vehicle lights
-        switchLight(vehicleRed);
-        switchLight(vehicleGreen);
+        changeRequested = true;
+        sequenceFinished = false;
+        console.log('###### Change requested: ' + changeRequested);
+        console.log('###### Sequence finished: ' + sequenceFinished);
+        
+        // Vehicles light to red
+        vehiclesRedPedestriansGreen(vehicleRed, vehicleYellow, vehicleGreen, stopLight, walkLight)
 
-        // Toggle the styles for pedestrian lights
-        switchLight(stopLight);
-        switchLight(walkLight);
+        sequenceFinished = true;
+        console.log('###### Sequence finished: ' + sequenceFinished);
     });
 </script>
 </body>

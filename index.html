@@ -193,8 +193,8 @@
   
   <footer>
     <div class="variables">
-      <div id="vehiclesGracePeriod">Vehicles grace period: 0 seconds</div>
-      <div id="pedestriansGracePeriod">Seconds for pedestrians to go through: 0 seconds.</div>
+      <div id="vehiclesGracePeriod">Vehicles grace period: 0 seconds.</div>
+      <div id="pedestriansGracePeriod">Pedestrians grace period: 0 seconds.</div>
       <a href="https://www.joantolos.com/blog/traffic-light-simulator" target="_blank">&copy; Joan Tolos - Traffic Light Simulator proof of concept</a>
     </div>
   </footer>
@@ -223,7 +223,7 @@
         switchLight(stopLight);
         switchLight(walkLight);
 
-        await countdown('Seconds for pedestrians to go through: ', 'pedestriansGracePeriod', 5, 1000); // Stop for 5 seconds
+        await countdown('Pedestrians grace period: ', 'pedestriansGracePeriod', 5, 1000); // Stop for 5 seconds
 
         for (let i = 0; i < 8; i++) {
             switchLight(walkLight);

@@ -87,16 +87,16 @@
       background-color: rgba(0, 255, 0, 0.1);
     }
 
-    .pedestrian-green-light.on {
+    .walk-light.on {
       opacity: 1;
     }
-    .pedestrian-green-light.off {
+    .walk-light.off {
       opacity: 0.2;
     }
-    .pedestrian-red-light.on {
+    .stop-light.on {
       opacity: 1;
     }
-    .pedestrian-red-light.off {
+    .stop-light.off {
       opacity: 0.2;
     }
 
@@ -109,10 +109,10 @@
       height: 50%; /* Center vertically */
       width: 100%; /* Center horizontally */
     }
-    .pedestrian-green-light i {
+    .walk-light i {
       color: rgba(0, 255, 0, 1); /* Set the color for the icons */
     }
-    .pedestrian-red-light i {
+    .stop-light i {
       color: rgba(255, 0, 0, 1); /* Set the color for the icons */
     }
 
@@ -185,8 +185,8 @@
       <div class="light green"></div>
     </div>
     <div class="pedestrian-light">
-      <div class="pedestrian-red-light on"><i class="fa-solid fa-person"></i></div>
-      <div class="pedestrian-green-light off"><i class="fa-solid fa-person-walking"></i></div>
+      <div class="stop-light"><i class="fa-solid fa-person"></i></div>
+      <div class="walk-light"><i class="fa-solid fa-person-walking"></i></div>
     </div>
   </div>
   <button id="controlButton"></button>
@@ -200,20 +200,40 @@
   </footer>
 
   <script>
-    const controlButton = document.getElementById('controlButton');
-    const vehicleLights = document.querySelectorAll('.vehicle-light .light');
+    function switchLight(light) {
+        light.classList.toggle('on');
+        light.classList.toggle('off');
+    }
 
+    const controlButton = document.getElementById('controlButton');
+    
+    // Vehicle lights
+    const vehicleLights = document.querySelectorAll('.vehicle-light .light');
     const vehicleRed = vehicleLights[0];
     const vehicleYellow = vehicleLights[1];
     const vehicleGreen = vehicleLights[2];
 
-    vehicleRed.classList.toggle('off');
-    vehicleYellow.classList.toggle('off');
-    vehicleGreen.classList.toggle('on');
-  
+    // Pedestrian lights
+    const pedestrianLights = document.querySelectorAll('.pedestrian-light .walk-light, .pedestrian-light .stop-light');
+    const stopLight = pedestrianLights[0];
+    const walkLight = pedestrianLights[1];
+
+    // Initial state
+    vehicleRed.classList.add('off');
+    vehicleYellow.classList.add('off');
+    vehicleGreen.classList.add('on');
+    stopLight.classList.add('on');
+    walkLight.classList.add('off');
+
     controlButton.addEventListener('click', () => {
-      
+        // Toggle the styles for vehicle lights
+        switchLight(vehicleRed);
+        switchLight(vehicleGreen);
+
+        // Toggle the styles for pedestrian lights
+        switchLight(stopLight);
+        switchLight(walkLight);
     });
-  </script>
+</script>
 </body>
 </html>

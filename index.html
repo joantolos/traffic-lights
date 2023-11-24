@@ -193,8 +193,8 @@
   
   <footer>
     <div class="variables">
-      <div>Vehicles grace period: 20 seconds</div>
-      <div>Seconds for pedestrians to go through: 10</div>
+      <div id="vehiclesGracePeriod">Vehicles grace period: 0 seconds</div>
+      <div id="pedestriansGracePeriod">Seconds for pedestrians to go through: 0 seconds.</div>
       <a href="https://www.joantolos.com/blog/traffic-light-simulator" target="_blank">&copy; Joan Tolos - Traffic Light Simulator proof of concept</a>
     </div>
   </footer>
@@ -223,9 +223,9 @@
         switchLight(stopLight);
         switchLight(walkLight);
 
-        await delay(5000); // Stop for 5 seconds
+        await countdown('Seconds for pedestrians to go through: ', 'pedestriansGracePeriod', 5, 1000); // Stop for 5 seconds
 
-        for (let i = 0; i < 8; i++) {
+        for (let i = 0; i < 6; i++) {
             switchLight(walkLight);
             await delay(500); // half second
         }
@@ -239,6 +239,21 @@
         switchLight(vehicleRed);
 
         await delay(2000); // 2 seconds
+    }
+
+    async function countdown(prefix, name, duration, interval) {
+        let remainingTime = duration;
+
+        while (remainingTime > 0) {
+            // Update the HTML element with the remaining time (assuming you have an element with id "name" in your HTML)
+            document.getElementById(name).textContent =  prefix + remainingTime + ' seconds.';
+
+            await delay(interval);
+            remainingTime -= interval / 1000; // Convert milliseconds to seconds
+        }
+
+        // Reset the HTML element after the countdown is finished
+        document.getElementById(name).textContent = prefix + ' 0 seconds.';
     }
 
     const controlButton = document.getElementById('controlButton');

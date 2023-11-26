@@ -189,10 +189,12 @@
       <div class="walk-light"><i class="fa-solid fa-person-walking"></i></div>
     </div>
   </div>
-  <button id="controlButton"></button>
+  <button id="stopButton"></button>
+  <button id="stopRequestButton"></button>
   
   <footer>
     <div class="variables">
+      <div id="stopRequested">Stop requested: No.</div>
       <div id="vehiclesGracePeriod">Vehicles grace period: 0 seconds.</div>
       <div id="pedestriansGracePeriod">Pedestrians grace period: 0 seconds.</div>
       <a href="https://www.joantolos.com/blog/traffic-light-simulator" target="_blank">&copy; Joan Tolos - Traffic Light Simulator proof of concept</a>
@@ -200,65 +202,10 @@
   </footer>
 
   <script>
-    function switchLight(light) {
-        light.classList.toggle('on');
-        light.classList.toggle('off');
-    }
-
-    function delay(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
-
-    async function stopTrafficSequence() {
-        switchLight(vehicleYellow);
-        switchLight(vehicleGreen);
-
-        await delay(3000); // Stop for 3 seconds
-
-        switchLight(vehicleYellow);
-        switchLight(vehicleRed);
-
-        await delay(1500); // Stop for 1.5 seconds
-
-        switchLight(stopLight);
-        switchLight(walkLight);
-
-        await countdown('Pedestrians grace period: ', 'pedestriansGracePeriod', 5, 1000); // Stop for 5 seconds
-
-        for (let i = 0; i < 8; i++) {
-            switchLight(walkLight);
-            await delay(250); // half second
-        }
-
-        switchLight(walkLight);
-        switchLight(stopLight);
-        
-        await delay(1500); // Stop for 1.5 seconds
-
-        switchLight(vehicleGreen);
-        switchLight(vehicleRed);
-
-        await delay(2000); // 2 seconds
-    }
-
-    async function countdown(prefix, name, duration, interval) {
-        let remainingTime = duration;
-
-        while (remainingTime > 0) {
-            // Update the HTML element with the remaining time (assuming you have an element with id "name" in your HTML)
-            document.getElementById(name).textContent =  prefix + remainingTime + ' seconds.';
-
-            await delay(interval);
-            remainingTime -= interval / 1000; // Convert milliseconds to seconds
-        }
-
-        // Reset the HTML element after the countdown is finished
-        document.getElementById(name).textContent = prefix + ' 0 seconds.';
-    }
-
-    const controlButton = document.getElementById('controlButton');
-    let changeRequested = false;
-    let sequenceFinished = false;
+    let userClickedDuringSequence = false;
+    let vehiclesGracePeriodActive = false;
+    
+    document.getElementById('stopRequestButton').style.display = 'none';
 
     // Vehicle lights
     const vehicleLights = document.querySelectorAll('.vehicle-light .light');
@@ -278,13 +225,82 @@
     stopLight.classList.add('on');
     walkLight.classList.add('off');
 
-    controlButton.addEventListener('click', async () => {
-        changeRequested = true;
-        sequenceFinished = false;
+    function switchLight(light) {
+        light.classList.toggle('on');
+        light.classList.toggle('off');
+    }
 
-        await stopTrafficSequence();
+    function delay(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
 
-        sequenceFinished = true;
+    async function stopTrafficSequence() {
+      // Hide the button
+      document.getElementById('stopButton').style.display = 'none';
+      document.getElementById('stopRequestButton').style.display = 'block';
+      
+      switchLight(vehicleYellow);
+      switchLight(vehicleGreen);
+
+      await delay(3000); // Stop for 3 seconds
+
+      switchLight(vehicleYellow);
+      switchLight(vehicleRed);
+
+      await delay(1500); // Stop for 1.5 seconds
+
+      switchLight(stopLight);
+      switchLight(walkLight);
+
+      await countdown('Pedestrians grace period: ', 'pedestriansGracePeriod', 5); // Stop for 5 seconds
+
+      for (let i = 0; i < 8; i++) {
+          switchLight(walkLight);
+          await delay(250); // half second
+      }
+
+      switchLight(walkLight);
+      switchLight(stopLight);
+        
+      await delay(1500); // Stop for 1.5 seconds
+
+      switchLight(vehicleGreen);
+      switchLight(vehicleRed);
+
+      await delay(2000); // 2 seconds
+
+      await countdown('Vechicles grace period: ', 'vehiclesGracePeriod', 10); // Stop for 10 seconds
+      if (userClickedDuringSequence === true) {
+        userClickedDuringSequence = false;
+        document.getElementById('stopRequested').textContent = 'Stop requested: No.';
+
+        // Show the button after the sequence is finished
+        document.getElementById('stopRequestButton').style.display = 'none';
+        document.getElementById('stopButton').style.display = 'block';
+      }
+    }
+
+    async function countdown(prefix, name, seconds) {
+        let remainingTime = seconds;
+
+        while (remainingTime > 0) {
+            document.getElementById(name).textContent =  prefix + remainingTime + ' seconds.';
+
+            await delay(1000);
+            remainingTime -= 1;
+        }
+
+        // Reset the HTML element after the countdown is finished
+        document.getElementById(name).textContent = prefix + ' 0 seconds.';
+    }
+
+    document.getElementById('stopButton').addEventListener('click', async () => {      
+      await stopTrafficSequence();      
+    });
+
+    document.getElementById('stopRequestButton').addEventListener('click', async () => {
+      userClickedDuringSequence = true;
+      document.getElementById('stopRequested').textContent = 'Stop requested: Yes.';
     });
   </script>
 

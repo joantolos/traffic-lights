@@ -278,6 +278,10 @@
         document.getElementById('stopRequestButton').style.display = 'none';
         document.getElementById('stopButton').style.display = 'block';
       }
+
+      if (userClickedDuringSequence === true) {
+        document.getElementById('stopButton').click();
+      }
     }
 
     async function countdown(prefix, name, seconds) {

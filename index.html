@@ -253,6 +253,10 @@
       
       await countdown('Pedestrians grace period: ', 'pedestriansGracePeriod', 5); // Stop for 5 seconds
 
+      document.getElementById('stopButton').disabled = false;
+      document.getElementById('stopButton').style.display = 'none';
+      document.getElementById('stopRequestButton').style.display = 'block';
+      
       for (let i = 0; i < 8; i++) {
           switchLight(walkLight);
           await delay(250); // half second
@@ -268,10 +272,6 @@
 
       await delay(2000); // 2 seconds
 
-      document.getElementById('stopButton').disabled = false;
-      document.getElementById('stopButton').style.display = 'none';
-      document.getElementById('stopRequestButton').style.display = 'block';
-      
       await countdown('Vehicles grace period: ', 'vehiclesGracePeriod', 10); // Stop for 10 seconds
       if (userClickedDuringSequence === true) {
         userClickedDuringSequence = false;

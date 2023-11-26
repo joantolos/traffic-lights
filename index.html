@@ -236,8 +236,7 @@
 
     async function stopTrafficSequence() {
       // Hide the button
-      document.getElementById('stopButton').style.display = 'none';
-      document.getElementById('stopRequestButton').style.display = 'block';
+      document.getElementById('stopButton').disabled = true;
       
       switchLight(vehicleYellow);
       switchLight(vehicleGreen);
@@ -251,7 +250,7 @@
 
       switchLight(stopLight);
       switchLight(walkLight);
-
+      
       await countdown('Pedestrians grace period: ', 'pedestriansGracePeriod', 5); // Stop for 5 seconds
 
       for (let i = 0; i < 8; i++) {
@@ -269,6 +268,10 @@
 
       await delay(2000); // 2 seconds
 
+      document.getElementById('stopButton').disabled = false;
+      document.getElementById('stopButton').style.display = 'none';
+      document.getElementById('stopRequestButton').style.display = 'block';
+      
       await countdown('Vehicles grace period: ', 'vehiclesGracePeriod', 10); // Stop for 10 seconds
       if (userClickedDuringSequence === true) {
         userClickedDuringSequence = false;

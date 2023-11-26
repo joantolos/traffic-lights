@@ -279,6 +279,10 @@
         document.getElementById('stopButton').style.display = 'block';
 
         document.getElementById('stopButton').click();
+      } else {
+        // Show the button after the sequence is finished
+        document.getElementById('stopRequestButton').style.display = 'none';
+        document.getElementById('stopButton').style.display = 'block';
       }
 
     }

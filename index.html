@@ -269,7 +269,7 @@
 
       await delay(2000); // 2 seconds
 
-      await countdown('Vechicles grace period: ', 'vehiclesGracePeriod', 10); // Stop for 10 seconds
+      await countdown('Vehicles grace period: ', 'vehiclesGracePeriod', 10); // Stop for 10 seconds
       if (userClickedDuringSequence === true) {
         userClickedDuringSequence = false;
         document.getElementById('stopRequested').textContent = 'Stop requested: No.';
@@ -277,11 +277,10 @@
         // Show the button after the sequence is finished
         document.getElementById('stopRequestButton').style.display = 'none';
         document.getElementById('stopButton').style.display = 'block';
-      }
 
-      if (userClickedDuringSequence === true) {
         document.getElementById('stopButton').click();
       }
+
     }
 
     async function countdown(prefix, name, seconds) {

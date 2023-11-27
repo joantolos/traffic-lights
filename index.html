@@ -22,36 +22,48 @@
     }
 
     .traffic-light-container {
-      display: flex; /* Make the container a flex container */
-      align-items: flex-end; /* Align items to the bottom of the container */
-      margin-bottom: 50px; /* Adjust the margin as needed */
+      display: flex;
+      align-items: flex-end;
+      margin-bottom: 50px;
     }
 
     .vehicle-light {
       width: 70px;
       height: 180px;
       background-color: #f0f0f0;
-      border: 2px solid black; /* Add a black border */
+      border: 2px solid black;
       border-radius: 10px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
       padding: 10px;
-      margin-right: 40px; /* Adjust the spacing between the lights */
+      margin-right: 40px;
+    }
+
+    .pedestrian-light-container {
+      display: flex;
+      flex-direction: column; /* Adjust to a column layout */
+      align-items: center; /* Center items horizontally */
+      margin-bottom: -63px; /* Adjust this value based on your layout */
     }
 
     .pedestrian-light {
-      width: 49px; /* 30% smaller */
-      height: 110px; /* 30% smaller */
+      width: 49px;
+      height: 110px;
       background-color: #f0f0f0;
-      border: 2px solid black; /* Add a black border */
-      border-radius: 7px; /* 30% smaller border radius */
+      border: 2px solid black;
+      border-radius: 7px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
-      padding: 7px; /* 30% smaller padding */
+      padding: 7px;
+    }
+
+    .pedestrian-buttons {
+      margin-left: 1.5px;
+      margin-top: 29px;
     }
 
     .light {
@@ -184,13 +196,17 @@
       <div class="light yellow"></div>
       <div class="light green"></div>
     </div>
-    <div class="pedestrian-light">
-      <div class="stop-light"><i class="fa-solid fa-person"></i></div>
-      <div class="walk-light"><i class="fa-solid fa-person-walking"></i></div>
+    <div class="pedestrian-light-container">
+      <div class="pedestrian-light">
+        <div class="stop-light"><i class="fa-solid fa-person"></i></div>
+        <div class="walk-light"><i class="fa-solid fa-person-walking"></i></div>
+      </div>
+      <div class="pedestrian-buttons">
+        <button id="stopButton"></button>
+        <button id="stopRequestButton"></button>
+      </div>
     </div>
   </div>
-  <button id="stopButton"></button>
-  <button id="stopRequestButton"></button>
   
   <footer>
     <div class="variables">

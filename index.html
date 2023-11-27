@@ -12,7 +12,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 100vh;
+      height: 70vh;
       margin: 0;
     }
 
@@ -24,7 +24,7 @@
     .traffic-light-container {
       display: flex; /* Make the container a flex container */
       align-items: flex-end; /* Align items to the bottom of the container */
-      margin-bottom: 80px; /* Adjust the margin as needed */
+      margin-bottom: 50px; /* Adjust the margin as needed */
     }
 
     .vehicle-light {
@@ -202,34 +202,25 @@
   </footer>
 
   <script>
-    let userClickedDuringSequence = false;
-    let vehiclesGracePeriodActive = false;
-    
-    document.getElementById('stopRequestButton').style.display = 'none';
-
-    // Vehicle lights
-    const vehicleLights = document.querySelectorAll('.vehicle-light .light');
-    const vehicleRed = vehicleLights[0];
-    const vehicleYellow = vehicleLights[1];
-    const vehicleGreen = vehicleLights[2];
-
-    // Pedestrian lights
-    const pedestrianLights = document.querySelectorAll('.pedestrian-light .walk-light, .pedestrian-light .stop-light');
-    const stopLight = pedestrianLights[0];
-    const walkLight = pedestrianLights[1];
+    const { stopLight, walkLight } = getPedestrianLights();
+    const { vehicleYellow, vehicleGreen, vehicleRed } = getVehicleLights();
 
     // Initial state
-    vehicleRed.classList.add('off');
-    vehicleYellow.classList.add('off');
-    vehicleGreen.classList.add('on');
-    stopLight.classList.add('on');
-    walkLight.classList.add('off');
+    setInitialState();
 
+    // Toggles the visibility of an element
+    function toggleElementVisibility(elementId, visible) {
+      const element = document.getElementById(elementId);
+      element.style.display = visible ? 'block' : 'none';
+    }
+
+    // Toggles a light on and off
     function switchLight(light) {
         light.classList.toggle('on');
         light.classList.toggle('off');
     }
 
+    // Simulate a delay using Promises
     function delay(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
@@ -238,15 +229,11 @@
       // Hide the button
       document.getElementById('stopButton').disabled = true;
       
-      switchLight(vehicleYellow);
-      switchLight(vehicleGreen);
+      // Traffic lights sequence
+      await vehicleLightsSequence();
 
-      await delay(3000); // Stop for 3 seconds
-
-      switchLight(vehicleYellow);
-      switchLight(vehicleRed);
-
-      await delay(1500); // Stop for 1.5 seconds
+      // Pedestrian lights sequence
+      // await pedestrianLightsSequence();
 
       switchLight(stopLight);
       switchLight(walkLight);
@@ -254,12 +241,13 @@
       await countdown('Pedestrians grace period: ', 'pedestriansGracePeriod', 5); // Stop for 5 seconds
 
       document.getElementById('stopButton').disabled = false;
-      document.getElementById('stopButton').style.display = 'none';
-      document.getElementById('stopRequestButton').style.display = 'block';
+      toggleElementVisibility('stopButton', false);
+      toggleElementVisibility('stopRequestButton', true);
       
+      // Blinking walk light
       for (let i = 0; i < 8; i++) {
-          switchLight(walkLight);
-          await delay(250); // half second
+        switchLight(walkLight);
+        await delay(250); // half second
       }
 
       switchLight(walkLight);
@@ -275,19 +263,52 @@
       await countdown('Vehicles grace period: ', 'vehiclesGracePeriod', 10); // Stop for 10 seconds
       if (userClickedDuringSequence === true) {
         userClickedDuringSequence = false;
-        document.getElementById('stopRequested').textContent = 'Stop requested: No.';
+        updateStopRequestedText(false);
 
         // Show the button after the sequence is finished
-        document.getElementById('stopRequestButton').style.display = 'none';
-        document.getElementById('stopButton').style.display = 'block';
+        toggleElementVisibility('stopButton', true);
+        toggleElementVisibility('stopRequestButton', false);
 
         document.getElementById('stopButton').click();
       } else {
         // Show the button after the sequence is finished
-        document.getElementById('stopRequestButton').style.display = 'none';
-        document.getElementById('stopButton').style.display = 'block';
+        toggleElementVisibility('stopButton', true);
+        toggleElementVisibility('stopRequestButton', false);
       }
 
+    }
+
+    // Vehicles lights sequence
+    async function vehicleLightsSequence() {
+      switchLight(vehicleYellow);
+      switchLight(vehicleGreen);
+
+      await delay(3000); // Stop for 3 seconds
+
+      switchLight(vehicleYellow);
+      switchLight(vehicleRed);
+
+      await delay(1500); // Stop for 1.5 seconds
+    }
+
+    // Function for the pedestrian lights sequence
+    async function pedestrianLightsSequence() {
+      switchLight(stopLight);
+      switchLight(walkLight);
+
+      // Pedestrian grace period
+      await countdown('Pedestrians grace period: ', 'pedestriansGracePeriod', 5);
+
+      // Blinking walk light
+      for (let i = 0; i < 8; i++) {
+        switchLight(walkLight);
+        await delay(250); // half second
+      }
+
+      switchLight(walkLight);
+      switchLight(stopLight);
+
+      await delay(1500); // Stop for 1.5 seconds
     }
 
     async function countdown(prefix, name, seconds) {
@@ -304,13 +325,52 @@
         document.getElementById(name).textContent = prefix + ' 0 seconds.';
     }
 
+    // Gets vehicle lights elements
+    function getVehicleLights() {
+      const vehicleLights = document.querySelectorAll('.vehicle-light .light');
+      const vehicleRed = vehicleLights[0];
+      const vehicleYellow = vehicleLights[1];
+      const vehicleGreen = vehicleLights[2];
+      return { vehicleRed, vehicleYellow, vehicleGreen };
+    }
+
+    // Gets pedestrian lights elements
+    function getPedestrianLights() {
+      const pedestrianLights = document.querySelectorAll('.pedestrian-light .walk-light, .pedestrian-light .stop-light');
+      const stopLight = pedestrianLights[0];
+      const walkLight = pedestrianLights[1];
+      return { stopLight, walkLight };
+    }
+
+    // Sets initial state
+    function setInitialState() {
+      let vehiclesGracePeriodActive = false;
+      let userClickedDuringSequence = false;
+
+      vehicleRed.classList.add('off');
+      vehicleYellow.classList.add('off');
+      vehicleGreen.classList.add('on');
+      stopLight.classList.add('on');
+      walkLight.classList.add('off');
+
+      document.getElementById('stopRequestButton').style.display = 'none';
+    }
+
+    // Function to update the 'stopRequested' text content
+    function updateStopRequestedText(requested) {
+      const textContent = requested ? 'Yes' : 'No';
+      document.getElementById('stopRequested').textContent = `Stop requested: ${textContent}.`;
+    }
+
+    // Event listener for the stop button
     document.getElementById('stopButton').addEventListener('click', async () => {      
       await stopTrafficSequence();      
     });
 
+    // Event listener for the stop request button
     document.getElementById('stopRequestButton').addEventListener('click', async () => {
       userClickedDuringSequence = true;
-      document.getElementById('stopRequested').textContent = 'Stop requested: Yes.';
+      updateStopRequestedText(true);
     });
   </script>
 

@@ -255,12 +255,18 @@
       // Hide the button
       document.getElementById('stopButton').disabled = true;
       
-      // Traffic lights sequence
-      await vehicleLightsSequence();
+      // Vehicles lights sequence
+      switchLight(vehicleYellow);
+      switchLight(vehicleGreen);
 
-      // Pedestrian lights sequence
-      // await pedestrianLightsSequence();
+      await delay(3000); // Stop for 3 seconds
 
+      switchLight(vehicleYellow);
+      switchLight(vehicleRed);
+
+      await delay(1500); // Stop for 1.5 seconds
+
+      // Pedestrians lights sequence
       switchLight(stopLight);
       switchLight(walkLight);
       
@@ -302,39 +308,6 @@
         toggleElementVisibility('stopRequestButton', false);
       }
 
-    }
-
-    // Vehicles lights sequence
-    async function vehicleLightsSequence() {
-      switchLight(vehicleYellow);
-      switchLight(vehicleGreen);
-
-      await delay(3000); // Stop for 3 seconds
-
-      switchLight(vehicleYellow);
-      switchLight(vehicleRed);
-
-      await delay(1500); // Stop for 1.5 seconds
-    }
-
-    // Function for the pedestrian lights sequence
-    async function pedestrianLightsSequence() {
-      switchLight(stopLight);
-      switchLight(walkLight);
-
-      // Pedestrian grace period
-      await countdown('Pedestrians grace period: ', 'pedestriansGracePeriod', 5);
-
-      // Blinking walk light
-      for (let i = 0; i < 8; i++) {
-        switchLight(walkLight);
-        await delay(250); // half second
-      }
-
-      switchLight(walkLight);
-      switchLight(stopLight);
-
-      await delay(1500); // Stop for 1.5 seconds
     }
 
     async function countdown(prefix, name, seconds) {
